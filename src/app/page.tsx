@@ -2,67 +2,29 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
-  ArrowRight,
   Compass,
   Headphones,
   Globe2,
   Plane,
   Check,
-  MapPin,
 } from "lucide-react";
 import { FlightEnquiry } from "@/components/flight-enquiry";
-import { WhatsappLink } from "@/components/whatsapp-link";
+import { DailyHero } from "@/components/daily-hero";
+import { JourneySteps } from "@/components/journey-steps";
+import { ServiceOverview } from "@/components/service-overview";
 import { DestinationCards, FinalCta } from "@/components/destinations";
 import { Reveal } from "@/components/reveal";
-import { business, enabledServices } from "@/config/business";
+import { business } from "@/config/business";
 export const metadata = { alternates: { canonical: "/" } };
 export default function Home() {
   return (
     <>
-      <section className="hero">
-        <Image
-          src={business.assets.hero}
-          alt="Generated Santorini-inspired view of blue domes and the Mediterranean coast"
-          fill
-          priority
-          sizes="100vw"
-        />
-        <div className="hero-shade" />
-        <div className="container hero-content">
-          <span className="hero-kicker">
-            <span /> YOUR NEXT JOURNEY STARTS HERE
-          </span>
-          <h1>
-            Explore the World
-            <br />
-            with <em>Aurix Travels.</em>
-          </h1>
-          <p>
-            Your journey starts here. Discover destinations and get personalized
-            assistance for your next trip.
-          </p>
-          <div className="hero-actions">
-            <a className="button" href="#flight-enquiry">
-              Plan Your Journey <ArrowUpRight size={18} />
-            </a>
-            <WhatsappLink className="hero-secondary">
-              Chat on WhatsApp <ArrowRight size={17} />
-            </WhatsappLink>
-          </div>
-          <div className="hero-footnote">
-            <Compass size={18} /> Thoughtfully planned. Personally guided.
-          </div>
-        </div>
-        <div className="hero-location">
-          <MapPin size={15} />
-          <span>
-            Oia, Santorini{" "}
-            <small>A little inspiration for your next escape</small>
-          </span>
-        </div>
-      </section>
+      <DailyHero />
       <FlightEnquiry />
-      <section className="container trust-row">
+      <section
+        className="container trust-row"
+        aria-label="Personal travel guidance"
+      >
         {[
           [
             Compass,
@@ -114,8 +76,8 @@ export default function Home() {
             <DestinationCards limit={4} />
           </Reveal>
           <p className="section-note">
-            A little destination inspiration. Availability and travel options
-            are confirmed individually.
+            Generated imagery for destination inspiration. Travel options are
+            confirmed individually.
           </p>
         </div>
       </section>
@@ -181,22 +143,10 @@ export default function Home() {
               Explore our services <ArrowUpRight size={17} />
             </Link>
           </div>
-          {enabledServices.map((s) => (
-            <article key={s.id} className="service-card">
-              <span className="service-icon">
-                <Plane />
-              </span>
-              <div>
-                <h3>{s.name}</h3>
-                <p>{s.description}</p>
-              </div>
-              <Link className="button button-light" href="/#flight-enquiry">
-                Let’s plan your flight <ArrowUpRight size={17} />
-              </Link>
-            </article>
-          ))}
+          <ServiceOverview />
         </div>
       </section>
+      <JourneySteps />
       <FinalCta />
     </>
   );

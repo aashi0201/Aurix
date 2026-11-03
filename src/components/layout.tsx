@@ -84,6 +84,15 @@ export function Footer() {
   return (
     <>
       <footer>
+        <div className="container footer-invitation">
+          <div>
+            <span className="eyebrow">A WORLD OF POSSIBILITIES</span>
+            <h2>Where will your next story begin?</h2>
+          </div>
+          <Link href="/#flight-enquiry" className="text-link">
+            Plan a journey with us <ArrowUpRight size={18} />
+          </Link>
+        </div>
         <div className="container footer-grid">
           <div>
             <Brand />

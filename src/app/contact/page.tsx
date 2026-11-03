@@ -1,3 +1,4 @@
+import { Mail, MessageCircle, ArrowUpRight } from "lucide-react";
 import { PageIntro } from "@/components/page-intro";
 import { ContactForm } from "@/components/contact-form";
 import { business } from "@/config/business";
@@ -26,25 +27,40 @@ export default function Contact() {
             A real conversation.
             <br />A personal plan.
           </h2>
-          <h3>Email us</h3>
-          <a className="text-link" href={`mailto:${business.email}`}>
-            {business.email}
-          </a>
-          <h3>WhatsApp</h3>
-          {url ? (
-            <a
-              href={url}
-              className="text-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Start a WhatsApp conversation →
-            </a>
-          ) : (
-            <p>
-              Our WhatsApp contact is being set up. Please use email for now.
-            </p>
-          )}
+          <div className="contact-channel">
+            <span className="service-icon">
+              <Mail size={22} />
+            </span>
+            <div>
+              <h3>Email us</h3>
+              <a className="text-link" href={`mailto:${business.email}`}>
+                {business.email}
+              </a>
+            </div>
+          </div>
+          <div className="contact-channel">
+            <span className="service-icon">
+              <MessageCircle size={22} />
+            </span>
+            <div>
+              <h3>WhatsApp</h3>
+              {url ? (
+                <a
+                  href={url}
+                  className="text-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Start a conversation <ArrowUpRight size={15} />
+                </a>
+              ) : (
+                <p>
+                  Our WhatsApp contact is being set up. Please use email for
+                  now.
+                </p>
+              )}
+            </div>
+          </div>
           {business.phone && (
             <p>
               Phone: <a href={`tel:${business.phone}`}>{business.phone}</a>

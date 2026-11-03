@@ -1,5 +1,6 @@
 import { business } from "@/config/business";
 import Image from "next/image";
+import { JourneySteps } from "@/components/journey-steps";
 import { PageIntro } from "@/components/page-intro";
 import { FinalCta } from "@/components/destinations";
 export const metadata = {
@@ -51,6 +52,7 @@ export default function About() {
           </p>
         </div>
       </section>
+      <JourneySteps />
       <FinalCta />
     </>
   );

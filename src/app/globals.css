@@ -1357,3 +1357,355 @@ p {
     animation: none;
   }
 }
+/* Daily destination backgrounds share one bright, readable brand treatment. */
+.hero > img.daily-hero-image {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.hero > img.daily-hero-image.is-ready {
+  opacity: 1;
+}
+.hero .hero-shade {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 248, 255, 0.98) 0%,
+    rgba(240, 248, 255, 0.94) 26%,
+    rgba(240, 248, 255, 0.72) 44%,
+    rgba(240, 248, 255, 0.15) 67%,
+    transparent 85%
+  );
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+.hero-location {
+  z-index: 1;
+}
+.hero-location small {
+  font-size: 9px;
+}
+.destination-country {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  background: #102a43d9;
+  color: white;
+  padding: 5px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+.destination-image::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, #102a4340);
+  pointer-events: none;
+}
+.destination-country,
+.destination-arrow {
+  z-index: 1;
+}
+.destination-card:focus-within {
+  outline: 3px solid #087ac7;
+  outline-offset: 4px;
+}
+.destination-info p {
+  min-height: 36px;
+}
+.destination-info .text-link {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  width: 100%;
+  justify-content: space-between;
+}
+.destination-info > div > span {
+  font-size: 10px;
+  color: #526477;
+}
+.about-preview .check-list {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.about-visual {
+  box-shadow: 0 15px 40px #102a430c;
+}
+.about-preview .image-caption {
+  border: 1px solid #ffffff90;
+  backdrop-filter: blur(8px);
+}
+.service-overview {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.service-list {
+  display: grid;
+  gap: 20px;
+}
+.service-feature {
+  padding: 36px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  scroll-margin-top: 110px;
+}
+.service-feature > .service-icon {
+  float: right;
+  margin-left: 15px;
+}
+.service-feature > .eyebrow {
+  padding-top: 6px;
+}
+.service-feature .service-title {
+  font-size: 30px;
+  margin-block: 20px 14px;
+}
+.service-feature > p {
+  font-size: 14px;
+  max-width: 480px;
+  line-height: 1.9;
+}
+.service-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  border-block: 1px solid var(--border);
+  padding-block: 18px;
+  margin-block: 25px;
+}
+.service-features > span {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #526477;
+}
+.service-features svg {
+  color: #0665a5;
+}
+.service-help {
+  padding: 36px;
+  border-radius: 12px;
+  background: #eaf6ff;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d6e9f6;
+}
+.service-help > svg {
+  color: #0665a5;
+  margin-bottom: 25px;
+}
+.service-help .service-title {
+  font-size: 30px;
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+.service-help > p {
+  font-size: 13px;
+  max-width: 330px;
+  line-height: 1.9;
+}
+.service-help > .button {
+  background: white;
+  border-color: #b6d5e8;
+  margin-top: 12px;
+}
+.service-help-note {
+  display: block;
+  font-size: 10px;
+  color: #526477;
+  margin-top: 20px;
+}
+.journey-section {
+  background: #fff;
+  border-bottom: 1px solid #eef3f7;
+}
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding: 0;
+  list-style: none;
+  margin: 35px 0 0;
+  counter-reset: steps;
+}
+.journey-grid li {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  background: linear-gradient(145deg, #f8fbff, white);
+}
+.journey-step-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.step-number {
+  font-family: Georgia, serif;
+  font-size: 40px;
+  color: #627c91;
+}
+.journey-grid h3 {
+  font-size: 19px;
+  line-height: 1.45;
+}
+.journey-grid p {
+  font-size: 13px;
+  line-height: 1.85;
+  margin-bottom: 0;
+}
+.contact-channel {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+.contact-channel .service-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.contact-channel h3 {
+  margin: 0 0 10px;
+}
+.contact-channel p {
+  font-size: 13px;
+  margin: 0;
+}
+.contact-channel a {
+  overflow-wrap: anywhere;
+}
+.contact-channel > div {
+  min-width: 0;
+}
+.contact-form {
+  box-shadow: 0 15px 40px #102a4306;
+  background: white;
+}
+.contact-grid {
+  background: radial-gradient(ellipse at right top, #edf7ff7a, transparent 65%);
+}
+.contact-note {
+  border: 1px solid var(--border);
+  border-left: 3px solid #087ac7;
+  background: #f8fbff;
+  border-radius: 6px;
+  padding: 18px;
+  font-size: 12px;
+}
+.footer-invitation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 35px;
+  margin-bottom: 40px;
+}
+.footer-invitation h2 {
+  font-size: 27px;
+  margin: 0;
+}
+.footer-invitation .eyebrow {
+  font-size: 9px;
+}
+.footer-invitation .text-link {
+  white-space: nowrap;
+}
+.footer-grid a:not(.brand):hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 800px) {
+  .service-overview {
+    grid-template-columns: 1fr;
+  }
+  .service-help {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 25px;
+  }
+  .service-help > svg {
+    grid-column: 1/-1;
+  }
+  .service-help > .button {
+    align-self: start;
+  }
+  .journey-grid {
+    gap: 15px;
+  }
+  .journey-grid li {
+    padding: 20px;
+  }
+  .journey-grid h3 {
+    font-size: 16px;
+  }
+  .journey-grid p {
+    font-size: 12px;
+  }
+  .footer-invitation {
+    align-items: flex-start;
+  }
+  .footer-invitation h2 {
+    font-size: 24px;
+    max-width: 320px;
+  }
+}
+@media (max-width: 600px) {
+  .journey-grid {
+    grid-template-columns: 1fr;
+  }
+  .journey-grid li {
+    padding: 25px;
+  }
+  .journey-step-top {
+    margin-bottom: 20px;
+  }
+  .journey-grid h3 {
+    font-size: 20px;
+  }
+  .journey-grid p {
+    font-size: 13px;
+  }
+  .service-help {
+    display: block;
+  }
+  .service-feature,
+  .service-help {
+    padding: 26px;
+  }
+  .service-feature .service-title,
+  .service-help .service-title {
+    font-size: 27px;
+  }
+  .service-feature > .service-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .service-feature > .eyebrow {
+    font-size: 8px;
+  }
+  .footer-invitation {
+    display: block;
+  }
+  .footer-invitation > .text-link {
+    margin-top: 22px;
+  }
+  .hero .hero-shade {
+    background: linear-gradient(90deg, #eff7fcf5, #eff7fccc 60%, #eff7fc65);
+  }
+  .destination-info p {
+    min-height: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero > img.daily-hero-image {
+    transition: none;
+  }
+}

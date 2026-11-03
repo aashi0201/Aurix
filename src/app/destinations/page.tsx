@@ -13,10 +13,12 @@ export default function Destinations() {
         A little inspiration for the places you’ve been dreaming about.
       </PageIntro>
       <section className="container section">
+        <h2 className="sr-only">Explore our destinations</h2>
         <DestinationCards />
         <p className="section-note">
-          Images are generated illustrations for inspiration, not advertised packages. Enquire
-          for individually checked travel options, availability and conditions.
+          Images are generated illustrations for inspiration, not advertised
+          packages. Enquire for individually checked travel options,
+          availability and conditions.
         </p>
       </section>
       <FinalCta />

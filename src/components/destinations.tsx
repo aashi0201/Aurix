@@ -16,9 +16,14 @@ export function DestinationCards({ limit = 6 }: { limit?: number }) {
                 src={d.image}
                 alt={`${d.name} destination inspiration`}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw"
+                sizes={
+                  limit === 4
+                    ? "(max-width: 520px) 100vw, (max-width: 1000px) 50vw, 25vw"
+                    : "(max-width: 520px) 100vw, (max-width: 800px) 50vw, 33vw"
+                }
               />
               <span className="destination-tag">{d.tag}</span>
+              <span className="destination-country">{d.country}</span>
               <span className="destination-arrow">
                 <ArrowUpRight size={20} />
               </span>
@@ -26,7 +31,7 @@ export function DestinationCards({ limit = 6 }: { limit?: number }) {
             <div className="destination-info">
               <div>
                 <h3>{d.name}</h3>
-                <span>{d.country}</span>
+                <span>Explore at your pace</span>
               </div>
               <p>{d.description}</p>
               <span className="text-link">

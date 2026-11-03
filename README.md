@@ -40,6 +40,16 @@ Copy `.env.example` to `.env.local` and set **NEXT_PUBLIC_WHATSAPP_NUMBER** only
 
 Flight enquiries use a local searchable airport dataset, local-calendar date checks, return-date ordering, adult/infant rules and a nine-traveller maximum. The customer must actually send the message in WhatsApp. Opening it does not confirm a booking or a delivered enquiry. Contact forms prepare email drafts; the site does not send email itself. Form data is not persistently stored. The travel team handles subsequent messages separately.
 
+## Daily hero backgrounds
+
+The homepage rotates through four curated local images: Santorini, Maldives, the Swiss Alps and Thailand. Every visitor sees the same selection for the **Asia/Kolkata (India)** calendar day, regardless of their own timezone. The sequence starts with Santorini on 3 November 2026 and repeats every four days; it does not generate or download a new image each day.
+
+Edit `src/config/hero.ts` to add/reorder images, tune each crop, change the starting date, or disable rotation. Keep bright scenery and enough space for the headline; one shared light overlay preserves the navy/blue theme and readable text. Images must have appropriate usage rights. Current images are the original generated illustrations described below.
+
+The static HTML starts with Santorini as an accessible fallback. After hydration the day's image loads above it with a gentle fade; if that image fails, the fallback and its correct location label remain visible. Motion is disabled for reduced-motion preferences. An open page updates at India midnight, and background tabs catch up on focus/visibility. This uses a browser timer, not a backend, paid API, cron job or daily rebuild. Deploy once after changing the image collection. Social preview imagery remains stable.
+
+The tests cover India midnight/year rollover, deterministic rotation, local asset presence and browser-level day changes across multiple timezones.
+
 ## Visual assets and outstanding design work
 
 The approved light-theme reference was supplied during implementation. The page follows its white navigation, light Santorini hero, floating enquiry card and destination-card direction. It is responsive original code, not a pixel-for-pixel reconstruction of the generated mockup.
