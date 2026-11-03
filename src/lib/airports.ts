@@ -1,0 +1,21 @@
+export const airports = [
+  ["Delhi", "Indira Gandhi International", "DEL"],
+  ["Mumbai", "Chhatrapati Shivaji Maharaj International", "BOM"],
+  ["Bengaluru", "Kempegowda International", "BLR"],
+  ["Hyderabad", "Rajiv Gandhi International", "HYD"],
+  ["Chennai", "Chennai International", "MAA"],
+  ["Dubai", "Dubai International", "DXB"],
+  ["Abu Dhabi", "Zayed International", "AUH"],
+  ["London", "Heathrow", "LHR"],
+  ["Singapore", "Changi", "SIN"],
+  ["Bangkok", "Suvarnabhumi", "BKK"],
+  ["Toronto", "Pearson International", "YYZ"],
+  ["New York", "John F. Kennedy International", "JFK"],
+  ["Malé", "Velana International", "MLE"],
+  ["Zurich", "Zurich Airport", "ZRH"],
+].map(([city, name, code]) => ({
+  city,
+  name,
+  code,
+  label: `${city} — ${name} (${code})`,
+}));
