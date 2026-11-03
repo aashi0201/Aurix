@@ -31,7 +31,7 @@ export function ContactForm() {
   } = useForm<Values>({ resolver: zodResolver(schema) });
   return (
     <form
-      id="enquire"
+      id="email-enquiry"
       className="contact-form"
       onSubmit={handleSubmit((v) => {
         const body = `Name: ${v.name}\nEmail: ${v.email}\nPhone: ${v.phone || "Not provided"}\n\n${v.message}`;

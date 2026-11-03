@@ -1709,3 +1709,154 @@ p {
     transition: none;
   }
 }
+.lead-section {
+  background: var(--light);
+  border-block: 1px solid var(--border);
+}
+.lead-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 75px;
+  align-items: center;
+}
+.lead-intro > .service-icon {
+  margin-bottom: 30px;
+}
+.lead-intro > p {
+  font-size: 14px;
+  line-height: 1.9;
+  max-width: 420px;
+}
+.lead-intro .check-list {
+  font-size: 13px;
+  margin-top: 30px;
+}
+.lead-form {
+  background: white;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 35px #102a4305;
+  scroll-margin-top: 110px;
+  position: relative;
+}
+.lead-form h2 {
+  font-size: 27px;
+  margin-bottom: 12px;
+}
+.lead-form > p:not(.form-note) {
+  font-size: 13px;
+}
+.lead-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 25px;
+}
+.lead-phone {
+  grid-column: 1/-1;
+}
+.lead-consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 22px;
+  color: #526477;
+}
+.lead-consent input {
+  margin-top: 4px;
+  accent-color: var(--blue);
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+.lead-form > .form-note {
+  font-size: 10px;
+  line-height: 1.8;
+}
+.lead-form > .form-note > svg {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.lead-form > .button {
+  margin-top: 22px;
+  width: 100%;
+}
+.lead-form > .button:disabled {
+  background: #e4edf3;
+  color: #40596d;
+  cursor: default;
+  transform: none;
+}
+.lead-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.lead-email {
+  margin-top: 18px;
+  font-size: 12px;
+}
+.lead-success {
+  border: 1px solid #bad7e9;
+}
+.security-check {
+  margin-top: 20px;
+  min-height: 65px;
+}
+.security-check p {
+  font-size: 12px;
+  color: #ad2939;
+}
+.contact-alternative {
+  margin-top: 24px;
+  scroll-margin-top: 110px;
+}
+.contact-alternative > summary {
+  cursor: pointer;
+  color: #0665a5;
+  padding-block: 12px;
+  font-size: 13px;
+}
+.contact-alternative .contact-form {
+  margin-top: 15px;
+}
+@media (max-width: 800px) {
+  .lead-section-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .lead-intro h2 br {
+    display: none;
+  }
+  .lead-intro > p {
+    max-width: none;
+  }
+}
+@media (max-width: 520px) {
+  .lead-form {
+    padding: 24px 20px;
+  }
+  .lead-fields {
+    grid-template-columns: 1fr;
+  }
+  .lead-form .field input,
+  .lead-form .field select {
+    font-size: 16px;
+  }
+  .lead-consent {
+    font-size: 12px;
+  }
+  .lead-form > .form-note {
+    font-size: 11px;
+  }
+}
+/* Keep text contrast stable when a lead button becomes enabled after readiness. */
+.lead-form > .button {
+  transition: transform 0.2s;
+}

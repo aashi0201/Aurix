@@ -1,6 +1,6 @@
 # Aurix Travels
 
-A Next.js App Router website for travel enquiries. TypeScript, Tailwind CSS 4, Motion, Lucide, React Hook Form and Zod. No booking engine, database, payments, analytics or Amadeus integration.
+A Next.js App Router website for travel enquiries. TypeScript, Tailwind CSS 4, Motion, Lucide, React Hook Form and Zod. No booking engine, database, payments, analytics or Amadeus integration. An optional server route supports consent-based lead emails.
 
 ## Develop
 
@@ -38,7 +38,27 @@ Edit `src/config/business.ts` for navigation, destinations, enabled services and
 
 Copy `.env.example` to `.env.local` and set **NEXT_PUBLIC_WHATSAPP_NUMBER** only after receiving the verified business number. Use international digits only, without `+`, spaces or punctuation. It is public configuration, not a secret. Next.js inlines it at build time: rebuild after changing it. Empty or malformed configuration deliberately offers email and a readable message draft. No real business number has been supplied or tested.
 
-Flight enquiries use a local searchable airport dataset, local-calendar date checks, return-date ordering, adult/infant rules and a nine-traveller maximum. The customer must actually send the message in WhatsApp. Opening it does not confirm a booking or a delivered enquiry. Contact forms prepare email drafts; the site does not send email itself. Form data is not persistently stored. The travel team handles subsequent messages separately.
+Flight enquiries use a local searchable airport dataset, local-calendar date checks, return-date ordering, adult/infant rules and a nine-traveller maximum. The customer must actually send the message in WhatsApp. Opening it does not confirm a booking or a delivered enquiry. The longer contact form prepares an email draft. The optional personal-reply form can send an owner notification and a customer acknowledgement through Resend when configured. There is no persistent lead database; delivery-provider messages and the business inbox have separate retention. The travel team handles subsequent messages separately.
+
+## Personal-reply form and automatic emails
+
+The homepage and contact page include an optional, non-popup form asking for name, email, preferred contact method, an optional destination and a phone number only when WhatsApp or Call is selected. Consent is unchecked by default and limited to this enquiry plus its acknowledgement; there is no marketing subscription or contact on page visit. Automatic WhatsApp replies are **not** implemented: the preference tells your team how to follow up manually.
+
+Without delivery configuration, the same form clearly prepares an email draft for the visitor to send. It does not simulate acceptance or send automatic messages. The longer contact form remains available under “Prefer to write a longer email?” on the contact page.
+
+To activate automatic **email to both the owner and customer**:
+
+1. Create a Resend account, check its current sending limits and verify a sending domain. Prefer a dedicated sending subdomain so existing GoDaddy mailbox records are untouched. Add only the exact DNS records Resend supplies for that subdomain. Do not replace root MX/SPF/DKIM records or invent verification values.
+2. Set server-only `RESEND_API_KEY` and `LEAD_FROM_EMAIL` (a plain, verified sender email address). Optionally set `LEAD_NOTIFICATION_EMAIL`; it defaults to the supplied `info@aurixtravelslimited.in`. Customer acknowledgements have Reply-To set to this owner inbox, so you can continue the conversation. Owner notifications have Reply-To set to the customer's email.
+3. Create a Cloudflare Turnstile **managed** widget for your website hostname. Set `TURNSTILE_SITE_KEY` and server-only `TURNSTILE_SECRET_KEY`. The site key is public; the API exposes it only when automatic requests are configured. Production rejects Cloudflare's obvious always-pass test site keys. Never use test credentials to protect a public deployment.
+4. Set `LEAD_SITE_ORIGIN` to your exact public origin without a trailing slash. Preview/local domains need their own origin and corresponding widget hostname. Set `LEAD_FORM_ENABLED=true` when you are ready to test. Keep it false to retain email-draft mode.
+5. In a private staging deployment, make a consented enquiry using an email account you control. Verify **both inboxes**, sender authentication, Reply-To, errors and provider delivery logs before public activation. A successful API response means Resend accepted two messages, not that either arrived in an inbox. Deliverability, bounces, customer addresses, provider quotas and business mailbox health must be checked separately.
+
+`GET /api/enquiries` exposes only availability and the public widget key, never secrets. `POST /api/enquiries` checks same-origin submission, input/consent, body size, honeypot, and Turnstile token/hostname/action before calling Resend's strict batch API. A stable per-submission idempotency key prevents provider duplicates when an unchanged request is retried within Resend's idempotency window. The acknowledgement is fixed brand text; visitor-controlled text is only included in the owner email. Receipt/error checks never treat a partial or failed batch as success. Client timeouts offer retry or manual email; a timeout can occur after provider acceptance.
+
+There are bounded **per-instance** IP/email throttles in memory, not a shared serverless rate limiter or durable lead store. Turnstile is mandatory when enabled. Apply hosting-level abuse controls, provider quotas/alerts and a shared limiter before high-volume campaigns; verify your host's forwarded-IP behavior. No enquiry contents or provider secrets are logged by application code. Do not add this endpoint to a static export; deploy with Next.js server/serverless support (e.g. Vercel).
+
+Automated tests use synthetic provider responses and never send real emails. Until real account configuration and controlled inbox testing are complete, automatic delivery is **not live or verified**.
 
 ## Daily hero backgrounds
 

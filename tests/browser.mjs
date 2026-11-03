@@ -12,6 +12,12 @@ import assert from "node:assert/strict";
     timezoneId: "Asia/Kolkata",
   });
   const page = await context.newPage();
+  // Tests never send real messages, even if the target deployment is configured.
+  await page.route("**/api/enquiries", (route) =>
+    route.request().method() === "GET"
+      ? route.fulfill({ json: { available: false, siteKey: "" } })
+      : route.abort(),
+  );
   let errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   for (const route of [
@@ -122,11 +128,16 @@ import assert from "node:assert/strict";
   await page.waitForURL("**/about");
   assert.ok(page.url().endsWith("/about"));
   await page.goto(`${process.env.BASE_URL || "http://127.0.0.1:3000"}/contact`);
-  await page.locator('[name="name"]').fill("Test Traveller");
-  await page.locator('[name="email"]').fill("traveller@example.com");
-  await page.locator('[name="subject"]').fill("Travel enquiry");
   await page
-    .locator('[name="message"]')
+    .getByText("Prefer to write a longer email?", { exact: true })
+    .click();
+  await page.locator('.contact-form [name="name"]').fill("Test Traveller");
+  await page
+    .locator('.contact-form [name="email"]')
+    .fill("traveller@example.com");
+  await page.locator('.contact-form [name="subject"]').fill("Travel enquiry");
+  await page
+    .locator('.contact-form [name="message"]')
     .fill("Please help plan a trip to Dubai.");
   await page.getByRole("button", { name: "Prepare email enquiry" }).click();
   assert.ok(
@@ -134,6 +145,112 @@ import assert from "node:assert/strict";
       .getByRole("link", { name: "Open email draft" })
       .getAttribute("href"),
   );
+  // Inspect the real public status without exposing credentials or sending mail.
+  const unavailable = await page.request.get(
+    `${process.env.BASE_URL || "http://127.0.0.1:3000"}/api/enquiries`,
+  );
+  const publicStatus = await unavailable.json();
+  assert.equal(typeof publicStatus.available, "boolean");
+  assert.deepEqual(Object.keys(publicStatus).sort(), ["available", "siteKey"]);
+  if (!publicStatus.available) {
+    const blocked = await page.request.post(
+      `${process.env.BASE_URL || "http://127.0.0.1:3000"}/api/enquiries`,
+      { data: {} },
+    );
+    assert.equal(blocked.status(), 503);
+  }
+  const leadForm = page.locator(".lead-form");
+  await leadForm.locator('[name="name"]').fill("Test Traveller");
+  await leadForm.locator('[name="email"]').fill("traveller@example.com");
+  await leadForm.getByRole("button", { name: "Prepare email request" }).click();
+  assert.ok(
+    await leadForm
+      .getByText("Please agree to being contacted about this enquiry.", {
+        exact: true,
+      })
+      .isVisible(),
+  );
+  await leadForm.locator('[name="consent"]').check();
+  await leadForm.getByRole("button", { name: "Prepare email request" }).click();
+  assert.ok(
+    (await leadForm.getByRole("status").innerText()).includes(
+      "Nothing has been sent automatically",
+    ),
+  );
+  assert.ok(
+    (
+      await leadForm
+        .getByRole("link", { name: "Open email draft instead" })
+        .getAttribute("href")
+    ).startsWith("mailto:"),
+  );
+  for (const outcome of ["accepted", "failed"]) {
+    const testContext = await browser.newContext();
+    const testPage = await testContext.newPage();
+    testPage.on("pageerror", (e) => errors.push(e.message));
+    let submissions = 0;
+    await testPage.route("**/api/enquiries", async (route) => {
+      if (route.request().method() === "GET")
+        return route.fulfill({
+          json: { available: true, siteKey: "browser-fixture-key" },
+        });
+      const payload = route.request().postDataJSON();
+      submissions++;
+      assert.equal(payload.consent, true);
+      assert.equal(payload.preference, "WhatsApp");
+      assert.equal(payload.phone, "+91 90000 00000");
+      assert.equal(payload.token, "browser-fixture-token");
+      return outcome === "accepted"
+        ? route.fulfill({ status: 202, json: { reference: payload.requestId } })
+        : route.fulfill({
+            status: 502,
+            json: {
+              message: "We could not confirm your request. Please use email.",
+            },
+          });
+    });
+    await testPage.route(
+      "https://challenges.cloudflare.com/turnstile/v0/api.js?**",
+      (route) =>
+        route.fulfill({
+          contentType: "application/javascript",
+          body: `window.turnstile={render:(element,options)=>{element.textContent='Security check (test fixture)';setTimeout(()=>options.callback('browser-fixture-token'),10);return 'fixture-widget';},remove:()=>{}};`,
+        }),
+    );
+    await testPage.goto(
+      `${process.env.BASE_URL || "http://127.0.0.1:3000"}/contact`,
+    );
+    const form = testPage.locator(".lead-form");
+    await form.locator('[name="name"]').fill("Test Traveller");
+    await form.locator('[name="email"]').fill("traveller@example.com");
+    await form.locator('[name="preference"]').selectOption("WhatsApp");
+    await form.getByRole("button", { name: "Ask Aurix to contact me" }).click();
+    assert.equal(submissions, 0);
+    await form.locator('[name="phone"]').fill("+91 90000 00000");
+    await form.locator('[name="consent"]').check();
+    await form.getByRole("button", { name: "Ask Aurix to contact me" }).click();
+    await form
+      .getByRole("status")
+      .filter({
+        hasText:
+          outcome === "accepted"
+            ? "Your request is on its way"
+            : "We could not confirm",
+      })
+      .waitFor();
+    assert.equal(submissions, 1);
+    assert.equal(
+      await form.locator(".lead-success").count(),
+      outcome === "accepted" ? 1 : 0,
+    );
+    if (outcome === "failed")
+      assert.ok(
+        await form
+          .getByRole("link", { name: "Open email draft instead" })
+          .isVisible(),
+      );
+    await testContext.close();
+  }
   // All visitors use the India calendar day, including tabs open across midnight.
   for (const timezoneId of ["America/Los_Angeles", "Asia/Tokyo"]) {
     const timedContext = await browser.newContext({ timezoneId });
@@ -174,7 +291,7 @@ import assert from "node:assert/strict";
   }
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: all routes, axe accessibility, validation, destination preselection, email fallback, mobile menu, contact form, images, 6 responsive widths, and daily hero rollover in multiple timezones.",
+    "PASS: all routes, axe accessibility, validation, destination preselection, email fallback, mobile menu, contact form, images, 6 responsive widths, daily hero rollover in multiple timezones, consented lead drafts, and simulated notification acceptance/failure.",
   );
   await browser.close();
 })().catch((e) => {

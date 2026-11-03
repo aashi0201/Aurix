@@ -9,6 +9,7 @@ import {
   Check,
 } from "lucide-react";
 import { FlightEnquiry } from "@/components/flight-enquiry";
+import { LeadSection } from "@/components/lead-section";
 import { DailyHero } from "@/components/daily-hero";
 import { JourneySteps } from "@/components/journey-steps";
 import { ServiceOverview } from "@/components/service-overview";
@@ -147,6 +148,7 @@ export default function Home() {
         </div>
       </section>
       <JourneySteps />
+      <LeadSection />
       <FinalCta />
     </>
   );

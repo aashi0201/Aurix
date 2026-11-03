@@ -1,5 +1,6 @@
 import { Mail, MessageCircle, ArrowUpRight } from "lucide-react";
 import { PageIntro } from "@/components/page-intro";
+import { LeadRequest } from "@/components/lead-request";
 import { ContactForm } from "@/components/contact-form";
 import { business } from "@/config/business";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -74,7 +75,13 @@ export default function Contact() {
             the agent.
           </div>
         </div>
-        <ContactForm />
+        <div>
+          <LeadRequest id="enquire" />
+          <details className="contact-alternative" id="longer-enquiry">
+            <summary>Prefer to write a longer email?</summary>
+            <ContactForm />
+          </details>
+        </div>
       </section>
     </>
   );

@@ -32,27 +32,37 @@ export default function Privacy() {
         </p>
         <h2>How enquiries work</h2>
         <p>
-          The website validates and formats details in your browser. It does not
-          have an enquiry database and does not itself submit or store form
-          entries on a server. You choose whether to send a prepared message
-          through WhatsApp or your email application. Sent messages may then be
-          retained in the business’s email or messaging account to respond and
-          assist with your request.
+          Flight enquiries and the longer contact form prepare WhatsApp or email
+          drafts for you to send. The optional personal-reply form, when
+          enabled, sends the details you submit to our team through Resend and
+          requests an email acknowledgement to your address. This happens only
+          after you submit the form and actively agree to contact about that
+          enquiry. If automatic requests are unavailable, the form prepares an
+          email draft instead and tells you nothing was sent automatically. We
+          do not have a lead database or add these details to a marketing list.
+          Messages may be retained in our business inbox and by our email
+          delivery provider to handle your request.
         </p>
         <h2>Third-party services</h2>
         <p>
-          WhatsApp and your email provider process information under their own
-          policies. Opening their links may share information such as your IP
-          address and prepared message with those services. Hosting providers
-          may process technical request logs for delivery and security. The
-          final hosting provider and retention practices must be documented
-          before launch.
+          WhatsApp and your email provider process messages under their own
+          policies. Resend processes submitted contact details to send enquiry
+          notifications and acknowledgements when the automatic form is enabled.
+          A Cloudflare Turnstile security check loads when you interact with
+          that enabled form; Cloudflare may process technical browser and
+          network information to prevent abuse. The server verifies the security
+          token before requesting email delivery. Hosting providers may process
+          technical request logs for delivery and security. Provider
+          arrangements and retention practices must be reviewed before launch.
         </p>
         <h2>Cookies and local data</h2>
         <p>
           This implementation does not add advertising trackers, analytics
-          scripts, or persistent enquiry storage. Essential infrastructure
-          behavior should be reviewed with the selected hosting provider.
+          scripts, or a persistent lead database. Short-lived, hashed anti-abuse
+          counters may be held in server memory; email providers and the
+          business inbox retain sent messages under their own practices.
+          Essential infrastructure behavior should be reviewed with the selected
+          hosting provider.
         </p>
         <h2>Use and retention</h2>
         <p>
